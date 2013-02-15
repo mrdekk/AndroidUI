@@ -46,6 +46,15 @@ public class SideSliderActivity extends FragmentActivity
 		} );
 	}
 	
+	@Override
+	public void onBackPressed( )
+	{
+		if ( _contentFragments.size( ) > 0 )
+			this.popFragmentFromContentView( );
+		else
+			super.onBackPressed( );
+	}
+	
 	private void ensureMenuWidth( float percentage )
 	{
 		View sideScroll = this.findViewById( R.id.sideScroll );
