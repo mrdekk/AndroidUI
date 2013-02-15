@@ -303,6 +303,8 @@ public class SlideLayout extends FrameLayout
 		{
 			if ( _slidingState == STATE_SLIDING )
 					finishSliding( );
+			else if ( _slidingState == STATE_FINISHED )
+				close( );
 			
 			invalidate( );
 			
