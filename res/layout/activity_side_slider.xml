@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ru.mrdekk.android.ui.views.SlideLayout
+    	xmlns:android="http://schemas.android.com/apk/res/android"
+    	android:id="@+id/slideLayout"
+    	android:layout_width="fill_parent"
+    	android:layout_height="fill_parent" >
+
+    <ScrollView
+        	android:id="@+id/sideScroll"
+        	android:layout_width="200dp"
+        	android:layout_height="fill_parent"
+        	android:background="@android:color/black"
+        	android:tag="sidebar" >
+        
+	    <LinearLayout 
+	        	android:id="@+id/sidebar"
+	        	android:layout_width="200dp"
+	        	android:layout_height="wrap_content" 
+	        	android:orientation="vertical" >
+		</LinearLayout>
+		
+	</ScrollView>
+
+    <LinearLayout 
+        	android:id="@+id/contentView"
+        	android:layout_width="match_parent"
+        	android:layout_height="match_parent"
+        	android:orientation="vertical"
+        	android:layout_toRightOf="@id/sidebar"
+        	android:tag="contentView" >
+	    	    
+        <fragment
+            	android:id="@+id/navigationBar"
+            	android:layout_width="match_parent"
+            	android:layout_height="wrap_content"
+            	class="ru.mrdekk.android.ui.fragments.NavigationBarFragment" />
+            
+	</LinearLayout>
+	    
+</ru.mrdekk.android.ui.views.SlideLayout>
