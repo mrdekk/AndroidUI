@@ -23,6 +23,11 @@ public class SectionsAdapter extends BaseAdapter
 		_headers = new ArrayAdapter< String >( context, R.layout.row_list_header );
 	}
 	
+	public SectionsAdapter( Context context, int listHeaderResource )
+	{
+		_headers = new ArrayAdapter< String >( context, listHeaderResource );
+	}
+	
 	public void addSection( String section, Adapter adapter )
 	{
 		_headers.add( section );
