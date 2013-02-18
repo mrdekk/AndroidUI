@@ -50,10 +50,29 @@ public class NavigationBar extends RelativeLayout implements OnClickListener
 		this.setLayoutParams( lp );
 		this.setBackgroundResource( R.drawable.navigation_bar_background );
 		
+		setLeftMenuButton( );
+	}
+	
+	public void setLeftMenuButton( )
+	{
 		SVG svg = SVGParser.getSVGFromResource( getResources( ), R.raw.menu, 0xff000000, 0xffffffff );
 		Drawable menuDrawable = svg.createPictureDrawable( );
 		
 		this.setLeftBarButton( menuDrawable );		
+	}
+	
+	public void setLeftBackButton( String title )
+	{
+		if ( title.equals( "" ) )
+		{
+			setLeftMenuButton( );
+			return ;
+		}
+		
+		if ( title.length( ) > 5 )
+			title = title.substring( 0, 5 );
+		
+		this.setLeftBarButton( title );
 	}
 	
 	public void setLeftBarButton( String title )
@@ -168,6 +187,15 @@ public class NavigationBar extends RelativeLayout implements OnClickListener
 		newTitle.setTextColor( Color.WHITE );
 		
 		this.addView( newTitle );
+	}
+	
+	public String barTitle( )
+	{
+		TextView oldTitle = ( TextView )this.findViewWithTag( "title" );
+		if ( null != oldTitle )
+			return oldTitle.getText( ).toString( );
+		
+		return "";
 	}
 	
 	public void setNavigationBarListener( NavigationBarListener listener )

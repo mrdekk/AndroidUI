@@ -1,5 +1,7 @@
 <resources>
 
     <string name="app_name">AndroidUI</string>
+    
+    <string name="dummy_content_description" > </string>
 
 </resources>

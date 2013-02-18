@@ -4,6 +4,7 @@ import java.util.Stack;
 
 import ru.mrdekk.android.ui.R;
 import ru.mrdekk.android.ui.fragments.NavigationBarFragment;
+import ru.mrdekk.android.ui.fragments.NavigationableFragment;
 import ru.mrdekk.android.ui.views.NavigationBar;
 import ru.mrdekk.android.ui.views.SlideLayout;
 import android.os.Bundle;
@@ -17,7 +18,8 @@ import android.view.ViewGroup.LayoutParams;
 public class SideSliderActivity extends FragmentActivity 
 {
 	private NavigationBar.NavigationBarListener _navBarListener = null;
-	private Stack< Fragment > _contentFragments = new Stack< Fragment >( );
+	private Stack< NavigationableFragment > _contentFragments = new Stack< NavigationableFragment >( );
+	private Stack< String > _navigationBarTitles = new Stack< String >( );
 	
 	@Override
 	protected void onCreate( Bundle savedInstanceState )
@@ -35,9 +37,16 @@ public class SideSliderActivity extends FragmentActivity
 			{
 				if ( which == NavigationBar.NAVIGATION_BUTTON_LEFT )
 				{
-					SlideLayout slayout = ( SlideLayout )SideSliderActivity.this.findViewById( R.id.slideLayout );
-					if ( null != slayout )
-						slayout.toggle( );
+					if ( _contentFragments.size( ) == 1 )
+					{
+						SlideLayout slayout = ( SlideLayout )SideSliderActivity.this.findViewById( R.id.slideLayout );
+						if ( null != slayout )
+							slayout.toggle( );
+					}
+					else
+					{
+						SideSliderActivity.this.popFragmentFromContentView( );
+					}
 				}
 				
 				if ( null != _navBarListener )
@@ -57,7 +66,7 @@ public class SideSliderActivity extends FragmentActivity
 	
 	private void ensureMenuWidth( float percentage )
 	{
-		View sideScroll = this.findViewById( R.id.sideScroll );
+		View sideScroll = this.findViewById( R.id.sidebar );
 
 		DisplayMetrics metrics = new DisplayMetrics( ); 
 		getWindowManager( ).getDefaultDisplay( ).getMetrics( metrics );
@@ -103,19 +112,28 @@ public class SideSliderActivity extends FragmentActivity
 	}
 	*/
 	
-	public void pushFragmentToContentView( Fragment f )
+	public void pushFragmentToContentView( NavigationableFragment f )
 	{
 		if ( _contentFragments.size( ) > 0 )
 		{
-			Fragment prev = _contentFragments.peek( );
-		
+			NavigationableFragment prev = _contentFragments.peek( );
+			
 			FragmentTransaction ft = getSupportFragmentManager( ).beginTransaction( );
 			ft.hide( prev );
 			ft.commit( );
 		}
-		
+
+		NavigationBar navbar = getNavigationBar( );
+		if ( null != navbar )
 		{
+			_navigationBarTitles.push( navbar.barTitle( ) );
+			navbar.setLeftBackButton( navbar.barTitle( ) );
+		}
+		
+		if ( null != f )
+		{			
 			_contentFragments.push( f );
+			f.setNavigationBar( getNavigationBar( ) );
 		
 			FragmentTransaction ft = getSupportFragmentManager( ).beginTransaction( );
 			ft.add( R.id.contentView, f );
@@ -127,7 +145,7 @@ public class SideSliderActivity extends FragmentActivity
 	{
 		if ( _contentFragments.size( ) > 0 )
 		{
-			Fragment prev = _contentFragments.pop( );
+			NavigationableFragment prev = _contentFragments.pop( );
 			
 			FragmentTransaction ft = getSupportFragmentManager( ).beginTransaction( );
 			ft.remove( prev );
@@ -136,11 +154,20 @@ public class SideSliderActivity extends FragmentActivity
 		
 		if ( _contentFragments.size( ) > 0 )
 		{
-			Fragment prev = _contentFragments.peek( );
+			NavigationableFragment prev = _contentFragments.peek( );
 			
 			FragmentTransaction ft = getSupportFragmentManager( ).beginTransaction( );
 			ft.show( prev );
 			ft.commit( );
+			
+			prev.refresh( );
+		}
+
+		NavigationBar navbar = getNavigationBar( );
+		if ( null != navbar )
+		{
+			navbar.setBarTitle( _navigationBarTitles.pop( ) );
+			navbar.setLeftBackButton( _navigationBarTitles.peek( ) );
 		}
 	}
 }
