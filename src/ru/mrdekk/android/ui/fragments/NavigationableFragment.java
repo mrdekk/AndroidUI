@@ -21,5 +21,8 @@ public class NavigationableFragment extends Fragment
 			throw new IllegalStateException( "activity must be instance of SideSliderActivity");
 	}
 	
+	public void onLeftNavigationButtonClicked( ) { }
+	public void onRightNavigationButtonClicked( ) { }
+	
 	public void refresh( ) { }
 }

@@ -37,6 +37,12 @@ public class SideSliderActivity extends FragmentActivity
 			{
 				if ( which == NavigationBar.NAVIGATION_BUTTON_LEFT )
 				{
+					if ( _contentFragments.size( ) > 0 )
+					{
+						NavigationableFragment f = _contentFragments.peek( );
+						f.onLeftNavigationButtonClicked( );
+					}
+					
 					if ( _contentFragments.size( ) == 1 )
 					{
 						SlideLayout slayout = ( SlideLayout )SideSliderActivity.this.findViewById( R.id.slideLayout );
@@ -46,6 +52,14 @@ public class SideSliderActivity extends FragmentActivity
 					else
 					{
 						SideSliderActivity.this.popFragmentFromContentView( );
+					}
+				}
+				else if ( which == NavigationBar.NAVIGATION_BUTTON_RIGHT )
+				{
+					if ( _contentFragments.size( ) > 0 )
+					{
+						NavigationableFragment f = _contentFragments.peek( );
+						f.onRightNavigationButtonClicked( );
 					}
 				}
 				

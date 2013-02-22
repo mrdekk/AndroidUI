@@ -99,6 +99,9 @@ public class NavigationBar extends RelativeLayout implements OnClickListener
 	{
 		removeButton( which );
 		
+		if ( title.equals( "" ) )
+			return ;
+		
 		Button newButton = new Button( _context );
 		newButton.setTag( Integer.valueOf( which ) );
 		
